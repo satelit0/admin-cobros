@@ -1,0 +1,1099 @@
+unit UGastos;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ADODB, StdCtrls, ExtCtrls, Mask, JvExMask, JvToolEdit,
+  JvBaseEdits, DB, JvDataSource, Grids, DBGrids, JvExDBGrids, JvDBGrid,
+  DBCtrls, JvDBControls, Buttons, JvMaskEdit, JvCheckedMaskEdit,
+  JvDatePickerEdit,DateUtils, ComCtrls, JvExComCtrls, JvDateTimePicker,
+  Menus, RpDefine, RpRave, RpCon, RpBase, RpSystem, RpConDS, QuickRpt, UReportes,
+  QRCtrls, MemDS, VirtualTable, JvComponentBase, JvAppHotKey;
+
+type
+  TFGastos = class(TForm)
+    GB_1: TGroupBox;
+    CBB_NBancaGasto: TComboBox;
+    LB_1: TLabel;
+    ECal_1: TJvCalcEdit;
+    LB_2: TLabel;
+    CBB_DebitarA: TComboBox;
+    EL_NComprobante: TLabeledEdit;
+    LB_3: TLabel;
+    M_DescripcionG: TMemo;
+    LB_4: TLabel;
+    GB_2: TGroupBox;
+    DBNV_1: TJvDBNavigator;
+    DBGrid_1: TJvDBGrid;
+    Qr__Qr_BuscaXBanca: TADOQuery;
+    BBT_GuardarG: TBitBtn;
+    GB_3: TGroupBox;
+    EL_BuscaBancaComp: TLabeledEdit;
+    DTPE_FFin: TJvDatePickerEdit;
+    DTPE_FInicio: TJvDatePickerEdit;
+    LB_5: TLabel;
+    LB_6: TLabel;
+    BBT_BuscaG: TBitBtn;
+    BBT_Salir: TBitBtn;
+    Qr__Qr_BuscaXComp: TADOQuery;
+    DS_Gasto: TDataSource;
+    Qr__Qr_BuscaXFecha: TADOQuery;
+    Qr__Qr_BuscaXBancaid_gasto: TAutoIncField;
+    Qr__Qr_BuscaXBancaid_banca: TIntegerField;
+    Qr__Qr_BuscaXBancamontoGasto: TFloatField;
+    Qr__Qr_BuscaXBancadetallesGasto: TWideStringField;
+    Qr__Qr_BuscaXBancadebitarA: TIntegerField;
+    Qr__Qr_BuscaXBancanumeroComprobante: TWideStringField;
+    Qr__Qr_BuscaXBancafechaGasto: TDateTimeField;
+    Qr__Qr_BuscaXBancanumero_Banca: TIntegerField;
+    Qr__Qr_BuscaXCompid_gasto: TAutoIncField;
+    Qr__Qr_BuscaXCompid_banca: TIntegerField;
+    Qr__Qr_BuscaXCompmontoGasto: TFloatField;
+    Qr__Qr_BuscaXCompdetallesGasto: TWideStringField;
+    Qr__Qr_BuscaXCompdebitarA: TIntegerField;
+    Qr__Qr_BuscaXCompnumeroComprobante: TWideStringField;
+    Qr__Qr_BuscaXCompfechaGasto: TDateTimeField;
+    Qr__Qr_BuscaXFechaid_gasto: TAutoIncField;
+    Qr__Qr_BuscaXFechaid_banca: TIntegerField;
+    Qr__Qr_BuscaXFechamontoGasto: TFloatField;
+    Qr__Qr_BuscaXFechadetallesGasto: TWideStringField;
+    Qr__Qr_BuscaXFechadebitarA: TIntegerField;
+    Qr__Qr_BuscaXFechanumeroComprobante: TWideStringField;
+    Qr__Qr_BuscaXFechafechaGasto: TDateTimeField;
+    Qr__Qr_BuscaXFechanumero_Banca: TIntegerField;
+    DTP_FechaG: TJvDateTimePicker;
+    LB_7: TLabel;
+    Qr__Qr_BuscaXCompnumero_Banca: TIntegerField;
+    GB_4: TGroupBox;
+    RB_BBanca: TRadioButton;
+    RB_Comprobante: TRadioButton;
+    RB_Fecha: TRadioButton;
+    RB_BancaFecha: TRadioButton;
+    Qr__Qr_BuscaXNBFecha: TADOQuery;
+    Qr__Qr_BuscaXNBFechaid_gasto: TAutoIncField;
+    Qr__Qr_BuscaXNBFechaid_banca: TIntegerField;
+    Qr__Qr_BuscaXNBFechamontoGasto: TFloatField;
+    Qr__Qr_BuscaXNBFechadetallesGasto: TWideStringField;
+    Qr__Qr_BuscaXNBFechadebitarA: TIntegerField;
+    Qr__Qr_BuscaXNBFechanumeroComprobante: TWideStringField;
+    Qr__Qr_BuscaXNBFechafechaGasto: TDateTimeField;
+    Qr__Qr_BuscaXNBFechanumero_Banca: TIntegerField;
+    PM_Gastos: TPopupMenu;
+    MM_Editar1: TMenuItem;
+    MM_N2: TMenuItem;
+    MM_Eliminar1: TMenuItem;
+    MM_N3: TMenuItem;
+    MM_VisualizarImprimir: TMenuItem;
+    RVP_Informes: TRvProject;
+    RVS_1: TRvSystem;
+    RVC_1: TRvDataSetConnection;
+    GB_5: TGroupBox;
+    RB_GGeneral: TRadioButton;
+    RB_GBanca: TRadioButton;
+    SBT_1: TSpeedButton;
+    Qr__Qr_BuscaXComptgasto: TFloatField;
+    Qr__Qr_BuscaXBancatgasto: TFloatField;
+    Qr__Qr_BuscaXFechatgasto: TFloatField;
+    Qr__Qr_BuscaXNBFechatgasto: TFloatField;
+    Qr__Qr_BuscaXBancaorigen: TIntegerField;
+    Qr__Qr_BuscaXFechaorigen: TIntegerField;
+    Qr__Qr_BuscaXNBFechaorigen: TIntegerField;
+    Qr__Qr_BuscaXComporigen: TIntegerField;
+    Qr_BuscaGastoV: TADOQuery;
+    Qr_BuscaGastoVtgasto: TFloatField;
+    Qr_BuscaGastoVid_gasto: TAutoIncField;
+    Qr_BuscaGastoVid_banca: TIntegerField;
+    Qr_BuscaGastoVmontoGasto: TFloatField;
+    Qr_BuscaGastoVdetallesGasto: TWideStringField;
+    Qr_BuscaGastoVdebitarA: TIntegerField;
+    Qr_BuscaGastoVnumeroComprobante: TWideStringField;
+    Qr_BuscaGastoVfechaGasto: TDateTimeField;
+    Qr_BuscaGastoVorigen: TIntegerField;
+    Qr_BuscaGastoVnumero_Banca: TIntegerField;
+    Qr_BuscaGasto: TADOQuery;
+    Qr_BuscaGastotgasto: TFloatField;
+    Qr_BuscaGastoid_gasto: TAutoIncField;
+    Qr_BuscaGastoid_banca: TIntegerField;
+    Qr_BuscaGastomontoGasto: TFloatField;
+    Qr_BuscaGastodetallesGasto: TWideStringField;
+    Qr_BuscaGastodebitarA: TIntegerField;
+    Qr_BuscaGastonumeroComprobante: TWideStringField;
+    Qr_BuscaGastofechaGasto: TDateTimeField;
+    Qr_BuscaGastoorigen: TIntegerField;
+    Qr_BuscaGastonumero_Banca: TIntegerField;
+    TableV_Gatos: TVirtualTable;
+    TableV_GatosIndice: TAutoIncField;
+    TableV_GatosIdGasto: TIntegerField;
+    TableV_GatosidBanca: TIntegerField;
+    TableV_GatosTGasto: TFloatField;
+    TableV_GatosMotoGasto: TFloatField;
+    TableV_GatosDetallesGasto: TStringField;
+    TableV_GatosDebitarA: TIntegerField;
+    TableV_GatosNumeroComprobante: TStringField;
+    TableV_GatosFechaGasto: TDateTimeField;
+    TableV_GatosOrigen: TIntegerField;
+    TableV_GatosNumeroBanca: TStringField;
+    JvApplicationHotKey1: TJvApplicationHotKey;
+    procedure RB_GGeneralClick(Sender: TObject);
+    procedure RB_GBancaClick(Sender: TObject);
+    procedure RB_BBancaClick(Sender: TObject);
+    procedure RB_ComprobanteClick(Sender: TObject);
+    procedure RB_FechaClick(Sender: TObject);
+    procedure BBT_SalirClick(Sender: TObject);
+    procedure BBT_BuscaGClick(Sender: TObject);
+    procedure EL_BuscaBancaCompKeyPress(Sender: TObject; var Key: Char);
+    procedure BBT_GuardarGClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure RB_BancaFechaClick(Sender: TObject);
+    procedure DTPE_FInicioKeyPress(Sender: TObject; var Key: Char);
+    procedure M_DescripcionGKeyPress(Sender: TObject; var Key: Char);
+    procedure MM_Editar1Click(Sender: TObject);
+    procedure MM_Eliminar1Click(Sender: TObject);
+    procedure CBB_NBancaGastoKeyPress(Sender: TObject; var Key: Char);
+    procedure ECal_1KeyPress(Sender: TObject; var Key: Char);
+    procedure EL_NComprobanteKeyPress(Sender: TObject; var Key: Char);
+    procedure CBB_DebitarAKeyPress(Sender: TObject; var Key: Char);
+    procedure DTP_FechaGKeyPress(Sender: TObject; var Key: Char);
+    procedure MM_VisualizarImprimirClick(Sender: TObject);
+    procedure SBT_1Click(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure JvApplicationHotKey1HotKey(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+    procedure LlenarCombNbancaGasto;
+    procedure LlenarCombDebitarA;
+    function ValidaCampos:Boolean;
+    procedure LlenarCampos(IdGasto:Integer);
+    function BuscaIDEmpXIdBanca(IdBanca:Integer):Integer;
+
+  public
+    { Public declarations }
+    procedure EliminaGasto(IdGasto, SMensaje:Integer);
+    procedure InsertaGasto(idBanca:Integer;  montogasto:Double; detalleGasto:string;
+                           debitarA:Integer; nComprobante:string;fechaGasto, fecha:TDateTime;
+                           idEmpleado, Origen, SMensaje:Integer);
+
+    procedure ModificaGasto(idGasto, idBanca:Integer;  montogasto:Double; detalleGasto:string;
+                           debitarA:Integer; nComprobante:string;fechaGasto:TDateTime;
+                           OpcionMensaje:Integer);
+    function BuscaIdBanca(NBanca:string):Integer;
+    procedure BuscaGasto(idBanca:Integer; Ncomprobante:string; Opcion:Integer; f1,f2:TDateTime);
+    procedure LimpiarCampos;
+    
+  end;
+
+var
+  FGastos: TFGastos;
+  Qr_InsertaGasto:TADOQuery;
+  Qr_BuscaIdBanca:TADOQuery;
+  Qr_BuscaNBana:TADOQuery;
+  Venef: array[0..4] of string[60];
+  IdBanca: array[0..99] of Integer;
+  NBanca: array[0..99] of Integer;
+  NombreVenef:string;
+  NBancaBuscar:Integer;
+  TGastoReporte:string;
+  IdGasto:Integer;
+implementation
+
+uses UPrincipal, UIngresosBancas, UOpciones, UBuscaReporte;
+
+{$R *.dfm}
+
+{ TFGastos }
+
+procedure TFGastos.InsertaGasto(idBanca: Integer; montogasto: Double;
+  detalleGasto: string; debitarA: Integer; nComprobante: string;
+  fechaGasto, fecha: TDateTime; idEmpleado, Origen, SMensaje:Integer);
+begin
+  try
+    Qr_InsertaGasto:=TADOQuery.Create(Self);
+    with Qr_InsertaGasto do
+      begin
+        Connection:=ControlCuentasBancarias.Coneccion_1;
+        Close;
+        SQL.Clear;
+        sql.Add('insert into gastos(id_banca, montoGasto, detallesGasto, debitarA,'+
+                'numeroComprobante, fechaGasto, fecha, id_empleado, origen)');
+        SQL.Add('values(:p0, :p1, :p2, :p3, :p4, :p5, :p6, :p7, :p8)');
+        Parameters[0].Value:=idBanca;
+        Parameters[1].Value:=montogasto;
+        Parameters[2].Value:=detalleGasto;
+        Parameters[3].Value:=debitarA;
+        Parameters[4].Value:=nComprobante;
+        Parameters[5].Value:=fechaGasto;
+        Parameters[6].Value:=fecha;
+        Parameters[7].Value:=idEmpleado;
+        Parameters[8].Value:=Origen;
+        //Parameters[9].Value:=
+        ExecSQL;
+        Free;
+        if(SMensaje = 1)then
+          begin
+            MessageDlg('Datos guardados con éxito.', mtInformation, [mbOK],0);
+          end;
+      end;
+  except
+    MessageBox(0,'Se produjo un error al intentar guardar los datos. Comuniquese con el administrador del sistema.','Información',0);
+  end;
+end;
+
+procedure TFGastos.RB_GGeneralClick(Sender: TObject);
+begin
+  CBB_NBancaGasto.ItemIndex:=-1;
+  CBB_NBancaGasto.Enabled:=False;
+end;
+
+procedure TFGastos.RB_GBancaClick(Sender: TObject);
+begin
+  CBB_NBancaGasto.Enabled:=True;
+end;
+
+procedure TFGastos.RB_BBancaClick(Sender: TObject);
+begin
+  with Qr_BuscaGasto do
+    begin
+
+    end;
+  DTPE_FFin.Enabled:=False;
+  DTPE_FInicio.Enabled:=False;
+  EL_BuscaBancaComp.Enabled:=True;
+  EL_BuscaBancaComp.EditLabel.Caption:='Ingrese No. Banca';
+  EL_BuscaBancaComp.SetFocus;
+  //RVC_1.DataSet:=Qr_BuscaXBanca;
+end;
+
+procedure TFGastos.RB_ComprobanteClick(Sender: TObject);
+begin
+  with Qr_BuscaGasto do
+    begin
+
+
+    end;
+  DTPE_FFin.Enabled:=False;
+  DTPE_FInicio.Enabled:=False;
+  EL_BuscaBancaComp.Enabled:=True;
+  EL_BuscaBancaComp.EditLabel.Caption:='Ingrese No. de Comp.';
+  EL_BuscaBancaComp.SetFocus;
+//  RVC_1.DataSet:=Qr_BuscaXComp;
+end;
+
+procedure TFGastos.RB_FechaClick(Sender: TObject);
+begin
+  with Qr_BuscaGasto do
+    begin
+      
+
+    end;
+  DTPE_FFin.Enabled:=True;
+  DTPE_FInicio.Enabled:=True;
+  EL_BuscaBancaComp.Enabled:=False;
+  EL_BuscaBancaComp.Text:='';
+  DTPE_FInicio.SetFocus;
+//  RVC_1.DataSet:=Qr_BuscaXFecha;
+end;
+
+procedure TFGastos.BBT_SalirClick(Sender: TObject);
+begin
+  Self.Close;
+end;
+
+function TFGastos.BuscaIdBanca(NBanca: string): Integer;
+begin
+  try
+    Qr_BuscaIdBanca:=TADOQuery.Create(Self);
+    with Qr_BuscaIdBanca do
+      begin
+        Connection:=ControlCuentasBancarias.Coneccion_1;
+        Close;
+        SQL.Clear;
+        SQL.Add('select id_banca from bancas where numero_banca = :p0;');
+        if(Trim(NBanca) <> '')then
+          begin
+            Parameters[0].Value:=StrToInt(NBanca);
+          end
+        else
+          begin
+            Parameters[0].Value:=0;
+          end;
+        Open;
+        Result:=FieldByName('id_banca').AsInteger;
+      end;
+  finally
+    Qr_BuscaIdBanca.Free;
+  end;
+end;
+
+procedure TFGastos.BBT_BuscaGClick(Sender: TObject);
+var
+  id_banca, OpcionBusq:Integer;
+begin
+  id_banca:=BuscaIdBanca(EL_BuscaBancaComp.Text);
+  if(RB_BBanca.Checked = True)then
+    begin
+      RB_BBancaClick(Self);
+      if(Trim(EL_BuscaBancaComp.Text) <> '')then
+        begin
+          OpcionBusq:=0;
+          BuscaGasto(id_banca,EL_BuscaBancaComp.Text,OpcionBusq,DTPE_FInicio.Date,DTPE_FFin.Date);
+        end
+      else
+        begin
+          MessageDlg('Ingrese el número de banca para realizar la búqueda.',mtInformation,[mbOK],0);
+        end;
+    end
+  else
+  if(RB_Comprobante.Checked = True)then
+    begin
+      RB_ComprobanteClick(Self);
+      OpcionBusq:=1;
+      BuscaGasto(id_banca,EL_BuscaBancaComp.Text,OpcionBusq,DTPE_FInicio.Date,DTPE_FFin.Date);
+    end
+  else
+  if(RB_Fecha.Checked = True)then
+    begin
+      RB_FechaClick(Self);
+      OpcionBusq:=2;
+      BuscaGasto(id_banca,EL_BuscaBancaComp.Text,OpcionBusq,DTPE_FInicio.Date,DTPE_FFin.Date);
+    end
+  else
+  if(RB_BancaFecha.Checked = True)then
+    begin
+      RB_BancaFechaClick(Self);
+      if(Trim(EL_BuscaBancaComp.Text) <> '')then
+        begin
+          OpcionBusq:=3;
+          BuscaGasto(id_banca,EL_BuscaBancaComp.Text,OpcionBusq,DTPE_FInicio.Date,DTPE_FFin.Date);
+        end
+      else
+        begin
+          MessageDlg('Ingrese el número de banca para realizar la búqueda.',mtInformation,[mbOK],0);
+        end;
+    end;
+
+ { if (Trim(EL_BuscaBancaComp.Text) <> '') then
+    begin
+      id_banca:=BuscaIdBanca(EL_BuscaBancaComp.Text);
+      BuscaGasto(id_banca,EL_BuscaBancaComp.Text,OpcionBusq,DTPE_FInicio.Date,DTPE_FFin.Date);
+    end
+  else
+    begin
+      if((RB_Fecha.Checked = False)or((RB_Fecha.Checked = False)and(RB_BancaFecha.Checked = True)))then
+        begin
+          BuscaGasto(0,'',1,DTPE_FInicio.Date,DTPE_FFin.Date);
+          //MessageBox(0,'Ingrese un número de banca o comprobante para continuar.','Información',0)
+        end
+      else
+        begin
+          BuscaGasto(0,'',OpcionBusq,DTPE_FInicio.Date,DTPE_FFin.Date);
+        end;
+    end;        }
+
+end;
+
+procedure TFGastos.EL_BuscaBancaCompKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if not(Key in['0'..'9',#8,#13])then
+    begin
+      Key:=#0;
+    end;
+  if(Key = #13)then
+    begin
+      BBT_BuscaGClick(Self);
+      if(DTPE_FInicio.Enabled = True)then
+      DTPE_FInicio.SetFocus;
+    end;
+end;
+
+procedure TFGastos.BBT_GuardarGClick(Sender: TObject);
+begin
+  if(CBB_NBancaGasto.Enabled = True)then
+    begin
+      Id_Emp:=BuscaIDEmpXIdBanca(idbanca[CBB_NBancaGasto.ItemIndex]);
+    end;
+
+  if(ValidaCampos = True)then
+    begin
+      if(BBT_GuardarG.Tag = 0)then
+        begin
+          _FOpciones:=TFOpciones.Create(Self);
+          if(RB_GGeneral.Checked = True)then
+            begin
+              InsertaGasto(BuscaIdBanca('0'),ECal_1.Value,M_DescripcionG.Text,_FOpciones.BuscaIdVenf(CBB_DebitarA.Text),EL_NComprobante.Text,
+                           DateOf(DTP_FechaG.DateTime),Now,Id_Emp,1,1);
+              LimpiarCampos;
+            end
+          else
+          if(RB_GBanca.Checked = True)then
+            begin
+              InsertaGasto(BuscaIdBanca(CBB_NBancaGasto.Text),ECal_1.Value,M_DescripcionG.Text,_FOpciones.BuscaIdVenf(CBB_DebitarA.Text),EL_NComprobante.Text,
+                           DateOf(DTP_FechaG.DateTime),Now,Id_Emp,1,1);
+              LimpiarCampos;
+            end;
+          _FOpciones.Free;
+          BuscaGasto(0,'',1,DTPE_FInicio.Date,DTPE_FFin.Date);
+          IdGasto:=0;
+          //BBT_BuscaG.Enabled:=False;
+        end
+      else
+      if(BBT_GuardarG.Tag = 1)then
+        begin
+          _FOpciones:=TFOpciones.Create(Self);
+          if(RB_GGeneral.Checked = True)then
+            begin
+              ModificaGasto(IdGasto,BuscaIdBanca('0'),ECal_1.Value,M_DescripcionG.Text,_FOpciones.BuscaIdVenf(CBB_DebitarA.Text),EL_NComprobante.Text,
+                           DateOf(DTP_FechaG.DateTime),1);
+              LimpiarCampos;
+            end
+          else
+          if(RB_GBanca.Checked = True)then
+            begin
+              ModificaGasto(IdGasto,BuscaIdBanca(CBB_NBancaGasto.Text),ECal_1.Value,M_DescripcionG.Text,_FOpciones.BuscaIdVenf(CBB_DebitarA.Text),EL_NComprobante.Text,
+                           DateOf(DTP_FechaG.DateTime),1);
+              LimpiarCampos;
+            end;
+          _FOpciones.Free;
+          BuscaGasto(0,'',1,DTPE_FInicio.Date,DTPE_FFin.Date);
+          IdGasto:=0;
+          BBT_GuardarG.Tag:=0;
+          _FGastos.Caption:='Gastos';
+        end;
+    end;
+end;
+
+procedure TFGastos.BuscaGasto(idBanca: Integer; Ncomprobante: string; Opcion:Integer; f1,f2:TDateTime);
+begin
+  if(Opcion = 0)then
+    begin
+      //DS_Gasto.DataSet:=Qr_BuscaXBanca;
+      with Qr_BuscaGasto do//Qr_BuscaXBanca do
+        begin
+          Close;
+          SQL.Clear;
+          SQL.Add('select (select sum(gx.montoGasto) from gastos as gx, bancas as bx where (gx.id_banca = bx.id_banca)and(gx.id_banca = :p0)) as tgasto,');
+          SQL.Add('g.id_gasto,g.id_banca,g.montoGasto,g.detallesGasto,g.debitarA,g.numeroComprobante, g.fechaGasto,g.origen,b.numero_Banca');
+          SQL.Add('from gastos as g,bancas as b where(g.id_banca = b.id_banca)and(g.id_banca = :p1) order by g.fechaGasto;');
+          Parameters[0].Value:=idBanca;
+          Parameters[1].Value:=idBanca;
+          Open;
+        end;
+    end
+  else
+  if(Opcion = 1)then
+    begin
+      //DS_Gasto.DataSet:=Qr_BuscaXComp;
+      with Qr_BuscaGasto do//Qr_BuscaXComp do
+        begin
+          Close;
+          SQL.Clear;
+          SQL.Add('select (select sum(gx.montoGasto) from gastos as gx, bancas as bx where (gx.id_banca = bx.id_banca)and');
+          SQL.Add('(gx.numerocomprobante like :p1)) as tgasto,g.id_gasto,g.id_banca,g.montoGasto,g.detallesGasto,');
+          SQL.Add('g.debitarA,g.numeroComprobante,g.fechaGasto,g.origen,b.numero_Banca');
+          SQL.Add('from gastos as g,bancas as b where(g.id_banca = b.id_banca)and(numeroComprobante like :p0)');
+          SQL.Add('order by g.fechaGasto;');
+          Parameters[0].Value:='%'+Ncomprobante+'%';
+          Parameters[1].Value:='%'+Ncomprobante+'%';
+          Open;
+        end;
+      IdGasto:=Qr_BuscaGastoid_gasto.Value;//Qr_BuscaXCompid_gasto.AsInteger;
+    end
+  else
+  if(Opcion = 2)then
+    begin
+      if(CompareDate(DateOf(f2),DateOf(f1)) = 0)or(CompareDate(DateOf(f2),DateOf(f1)) = 1)then
+        begin
+          //DS_Gasto.DataSet:=Qr_BuscaXFecha;
+          with Qr_BuscaGasto do//Qr_BuscaXFecha do
+            begin
+              Close;
+              SQL.Clear;
+              SQL.Add('select (select sum(gx.montoGasto) from gastos as gx, bancas as bx where (gx.id_banca = bx.id_banca)and');
+              SQL.Add('(gx.fechaGasto between :f1 and :f2)) as tgasto,g.id_gasto,g.id_banca,g.montoGasto,');
+              SQL.Add('g.detallesGasto,g.debitarA,g.numeroComprobante,g.fechaGasto,g.origen,b.numero_Banca');
+              SQL.Add('from gastos as g,bancas as b where(g.id_banca = b.id_banca)and(g.fechaGasto between :f3 and :f4) order by g.fechaGasto;');
+              Parameters[0].Value:=DateOf(f1);
+              Parameters[1].Value:=DateOf(f2);
+              Parameters[2].Value:=DateOf(f1);
+              Parameters[3].Value:=DateOf(f2);
+              Open;
+            end;
+          IdGasto:=Qr_BuscaGastoid_gasto.Value;//Qr_BuscaXFechaid_gasto.AsInteger;
+        end
+      else
+        begin
+          MessageDlg('La fecha inicial es mayor que la fecha final.',mtInformation,[mbOK],0);
+        end;
+    end
+  else
+  if(Opcion = 3)then
+    begin
+      if(CompareDate(DateOf(f2),DateOf(f1)) = 0)or(CompareDate(DateOf(f2),DateOf(f1)) = 1)then
+        begin
+         // DS_Gasto.DataSet:=Qr_BuscaXNBFecha;
+          with Qr_BuscaGasto do//Qr_BuscaXNBFecha do
+            begin
+              Close;
+              SQL.Clear;
+              SQL.Add('select (select sum(gx.montoGasto) from gastos as gx, bancas as bx where (gx.id_banca = bx.id_banca)and');
+              SQL.Add('(gx.id_banca = :p0)and(fechaGasto between :f1 and :f2)) as tgasto,');
+              SQL.Add(' g.id_gasto,g.id_banca,g.montoGasto,g.detallesGasto,g.debitarA,g.numeroComprobante,');
+              SQL.Add('g.fechaGasto,g.origen,b.numero_Banca from gastos as g,bancas as b');
+              SQL.Add('where(g.id_banca = b.id_banca)and(g.id_banca = :p1)and(g.fechaGasto between :f3 and :f4)');
+              SQL.Add('order by g.fechaGasto;');
+              Parameters[0].Value:=idBanca;
+              Parameters[1].Value:=DateOf(f1);
+              Parameters[2].Value:=DateOf(f2);
+              Parameters[3].Value:=idBanca;
+              Parameters[4].Value:=DateOf(f1);
+              Parameters[5].Value:=DateOf(f2);
+              Open;
+            end;
+          IdGasto:=Qr_BuscaGastoid_gasto.Value;//Qr_BuscaXNBFechaid_gasto.AsInteger;
+        end
+      else
+        begin
+          MessageDlg('La fecha inicial es mayor que la fecha final.',mtInformation,[mbOK],0);
+        end;
+    end;
+  if(Qr_BuscaGasto.RecordCount > 0)then
+    begin
+      Qr_BuscaGasto.First;
+      TableV_Gatos.Clear;
+      while not Qr_BuscaGasto.Eof do
+        begin
+          with TableV_Gatos do
+            begin
+              Append;
+              TableV_GatosIdGasto.Value:=Qr_BuscaGastoid_gasto.Value;
+              TableV_GatosidBanca.Value:=Qr_BuscaGastoid_banca.Value;
+              TableV_GatosTGasto.Value:=Qr_BuscaGastotgasto.Value;
+              TableV_GatosMotoGasto.Value:=Qr_BuscaGastomontoGasto.Value;
+              TableV_GatosDetallesGasto.Value:=Qr_BuscaGastodetallesGasto.Value;
+              TableV_GatosDebitarA.Value:=Qr_BuscaGastodebitarA.Value;
+              TableV_GatosNumeroComprobante.Value:=Qr_BuscaGastonumeroComprobante.Value;
+              TableV_GatosFechaGasto.Value:=Qr_BuscaGastofechaGasto.Value;
+              TableV_GatosOrigen.Value:=Qr_BuscaGastoorigen.Value;
+              if(Qr_BuscaGastonumero_Banca.Value = 0)then
+                begin
+                  TableV_GatosNumeroBanca.Value:='Central';
+                end
+              else
+                begin
+                  TableV_GatosNumeroBanca.Value:=Qr_BuscaGastonumero_Banca.AsString;
+                end;
+              Post;
+            end;
+          Qr_BuscaGasto.Next;
+        end;
+    end
+  else
+    begin
+      MessageDlg('No hay datos para mostrar.',mtInformation,[mbOK],0);
+    end;
+
+end;
+
+procedure TFGastos.FormShow(Sender: TObject);
+begin
+  DTP_FechaG.Date:=Now;
+  RB_ComprobanteClick(Self);
+  BuscaGasto(0,'',1,DTPE_FInicio.Date,DTPE_FFin.Date);
+  LlenarCombNbancaGasto;
+  LlenarCombDebitarA;
+end;
+
+procedure TFGastos.LlenarCombNbancaGasto;
+var
+  I:Integer;
+begin
+  Qr_BuscaNBana:=TADOQuery.Create(Self);
+  with Qr_BuscaNBana do
+    begin
+      Connection:=ControlCuentasBancarias.Coneccion_1;
+      Close;
+      SQL.Clear;
+      SQL.Add('select id_banca, numero_banca from bancas where estado = 1;');
+      Open;
+      First;
+    end;
+  CBB_NBancaGasto.Items.Clear;
+  for I := 0 to Qr_BuscaNBana.RecordCount-1 do
+    begin
+      if(Qr_BuscaNBana.fieldbyName('numero_banca').AsInteger <> 0)then
+        begin
+          CBB_NBancaGasto.Items.Add(Qr_BuscaNBana.fieldbyName('numero_banca').AsString);
+          NBanca[i]:=Qr_BuscaNBana.fieldbyName('numero_banca').AsInteger;
+          IdBanca[i]:=Qr_BuscaNBana.fieldbyName('id_banca').AsInteger;
+        end;
+      Qr_BuscaNBana.Next;
+    end;
+end;
+
+procedure TFGastos.LlenarCombDebitarA;
+var
+  Qr_BuscaVenef:TADOQuery;
+  I:Integer;
+begin
+  Qr_BuscaVenef:=TADOQuery.Create(Self);
+  with Qr_BuscaVenef do
+    begin
+      Connection:=ControlCuentasBancarias.Coneccion_1;
+      Close;
+      SQL.Clear;
+      SQL.Add('select id_veneficiario, nombreVenef from veneficiarios;');
+      Open;
+      First;
+    end;
+  CBB_DebitarA.Clear;
+  for I:= 0 to Qr_BuscaVenef.RecordCount-1 do
+    begin
+      CBB_DebitarA.Items.Add(Qr_BuscaVenef.fieldByName('nombreVenef').AsString);
+      Venef[I]:=Qr_BuscaVenef.fieldByName('nombreVenef').AsString;
+      Qr_BuscaVenef.Next;
+    end;
+  Qr_BuscaVenef.Free;
+end;
+
+function TFGastos.ValidaCampos: Boolean;
+var
+  MensajeDlg:Integer;
+begin
+  LB_1.Font.Color:=0;
+  LB_2.Font.Color:=0;
+  LB_4.Font.Color:=0;
+  lb_3.Font.Color:=0;
+  if((RB_GBanca.Checked = True)and(CBB_NBancaGasto.ItemIndex = -1))then
+    begin
+      Result:=False;
+      LB_1.Font.Color:=clRed;
+      CBB_NBancaGasto.SetFocus;
+      MessageBox(0,'Seleccione el una Banca para continuar.','Información',0);
+    end
+  else
+  if(Trim(ECal_1.Text) = '')then
+    begin
+      Result:=False;
+      LB_2.Font.Color:=clRed;
+      ECal_1.SetFocus;
+      MessageBox(0,'Ingrese el monto del gasto para continuar.','Información',0);
+    end
+  else
+  if(Trim(M_DescripcionG.Text) = '')then
+    begin
+      Result:=True;
+      LB_4.Font.Color:=clRed;
+      M_DescripcionG.SetFocus;
+      MessageBox(0,'Describa el gasto para continuar.','Información',0);
+    end
+  else
+  if(CBB_DebitarA.ItemIndex = -1)then
+    begin
+      Result:=False;
+      lb_3.Font.Color:=255;
+      CBB_DebitarA.SetFocus;
+      MessageBox(0,'Seleccione a cual veneficiario se le realizara el debito.','Información',0);
+    end
+  else
+  if(Trim(EL_NComprobante.Text) = '')then
+    begin
+      MensajeDlg:=MessageDlg('No hay número de comprobante registrado para este gasto.'+#13+#13+
+      'Desea continuar sin registrar un No. de Comprobante?',mtInformation,[mbYes,mbNo],0);
+      if(MensajeDlg = mrYes)then
+        begin
+          Result:=True;
+        end
+      else
+        begin
+          Result:=False;
+          EL_NComprobante.SetFocus;
+        end;
+    end
+  else
+    begin
+      Result:=True;
+    end;
+end;
+
+procedure TFGastos.RB_BancaFechaClick(Sender: TObject);
+begin
+  with Qr_BuscaGasto do
+    begin
+
+    end;
+  DTPE_FFin.Enabled:=True;
+  DTPE_FInicio.Enabled:=True;
+  EL_BuscaBancaComp.Enabled:=True;
+  EL_BuscaBancaComp.EditLabel.Caption:='Ingrese No. Banca';
+  EL_BuscaBancaComp.SetFocus;
+//  RVC_1.DataSet:=Qr_BuscaXNBFecha;
+end;
+
+procedure TFGastos.LimpiarCampos;
+begin
+  if(CBB_NBancaGasto.Enabled = True)then
+    begin
+      CBB_NBancaGasto.ItemIndex:=-1;
+    end;
+  ECal_1.Clear;
+  EL_NComprobante.Clear;
+  M_DescripcionG.Clear;
+  CBB_DebitarA.ItemIndex:=-1;
+  DTP_FechaG.Date:=Now;
+end;
+
+procedure TFGastos.LlenarCampos(IdGasto: Integer);
+var
+  Qr_LlenaCampos:TADOQuery;
+  I:Integer;
+begin
+  Qr_LlenaCampos:=TADOQuery.Create(Self);
+  with Qr_LlenaCampos do
+    begin
+      Connection:=ControlCuentasBancarias.Coneccion_1;
+      Close;
+      SQL.Clear;
+      SQL.Add('select * from gastos as g, bancas as b where (g.id_banca = b.id_banca)and (g.Id_Gasto = :p0);');
+      Parameters[0].Value:=IdGasto;
+      Open;
+    end;
+  if(Qr_LlenaCampos.RecordCount > 0)then
+    begin
+      if(Qr_LlenaCampos.FieldByName('numero_banca').AsInteger = 0)then
+        begin
+          RB_GGeneral.Checked:=True;
+        end
+      else
+        begin
+          RB_GBanca.Checked:=True;
+        end;
+      M_DescripcionG.Text:=Qr_LlenaCampos.FieldByName('detallesGasto').AsString;
+      ECal_1.Value:=Qr_LlenaCampos.FieldByName('montoGasto').AsInteger;
+      EL_NComprobante.Text:=Qr_LlenaCampos.FieldByName('numeroComprobante').AsString;
+      DTP_FechaG.Date:=Qr_LlenaCampos.fieldByName('fechaGasto').Value;
+      _FOpciones:=TFOpciones.Create(Self);
+      NombreVenef:=_FOpciones.BuscaNombreVenef(Qr_LlenaCampos.fieldByName('debitarA').AsInteger);
+      NBancaBuscar:=Qr_LlenaCampos.fieldByName('numero_Banca').AsInteger;
+      for i:= 0 to CBB_DebitarA.Items.Count-1 do
+        begin
+          if(Venef[i] = NombreVenef)then
+            begin
+              CBB_DebitarA.ItemIndex:=i;
+              //Exit;
+            end;
+        end;
+      for i:= 0 to CBB_NBancaGasto.Items.Count-1 do
+        begin
+          if(NBanca[i] = NBancaBuscar)then
+            begin
+              CBB_NBancaGasto.ItemIndex:=i;
+              //Exit;
+            end;
+        end;
+      _FOpciones.Free;
+    end;
+  Qr_LlenaCampos.Free;
+end;
+
+function TFGastos.BuscaIDEmpXIdBanca(IdBanca: Integer): Integer;
+var
+  Qr_BuscaIDEmp:TADOQuery;
+begin
+  Qr_BuscaIDEmp:=TADOQuery.Create(Self);
+  with Qr_BuscaIDEmp do
+    begin
+      Connection:=ControlCuentasBancarias.Coneccion_1;
+      Close;
+      SQL.Clear;
+      SQL.Add('select id_empleado_banca from bancas where id_banca = :p0;');
+      Parameters[0].Value:=IdBanca;
+      Open;
+      Result:=Qr_BuscaIDEmp.fieldByName('id_empleado_banca').AsInteger;
+      Free;
+    end;
+end;
+
+procedure TFGastos.DTPE_FInicioKeyPress(Sender: TObject; var Key: Char);
+begin
+  if(Key = #13)then
+    begin
+      DTPE_FFin.SetFocus;
+    end;
+end;
+
+procedure TFGastos.M_DescripcionGKeyPress(Sender: TObject; var Key: Char);
+begin
+  if(Key in['a'..'z'])then
+    begin
+      Key := UpCase(Key);
+    end;
+  if(Key = #13)then
+    begin
+      EL_NComprobante.SetFocus;
+    end;
+end;
+
+procedure TFGastos.ModificaGasto(idGasto, idBanca: Integer;
+  montogasto: Double; detalleGasto: string; debitarA: Integer;
+  nComprobante: string; fechaGasto: TDateTime;
+  OpcionMensaje: Integer);
+var
+  Qr_ModificaGasto:TADOQuery;
+begin
+  try
+    Qr_ModificaGasto:=TADOQuery.Create(Self);
+    with Qr_ModificaGasto do
+      begin
+        Connection:=ControlCuentasBancarias.Coneccion_1;
+        Close;
+        SQL.Clear;
+        SQL.Add('update gastos set id_banca = :p0, montoGasto = :p1,');
+        SQL.Add('detallesGasto = :p2, debitarA = :p3, numeroComprobante = :p4, fechaGasto = :p5');
+        SQL.Add('where id_gasto = :p6');
+        Parameters[0].Value:=idBanca;
+        Parameters[1].Value:=montogasto;
+        Parameters[2].Value:=detalleGasto;
+        Parameters[3].Value:=debitarA;
+        Parameters[4].Value:=nComprobante;
+        Parameters[5].Value:=fechaGasto;
+        Parameters[6].Value:=idGasto;
+        ExecSQL;
+        Free;
+        if(OpcionMensaje = 1)then
+          begin
+            MessageDlg('Datos modificados con éxilto',mtInformation,[mbOK],0);
+          end;
+      end;
+  except
+    MessageDlg('Se produjo un error an intentar modificar los datos.',mtError,[mbOK],0);
+  end;
+end;
+
+procedure TFGastos.MM_Editar1Click(Sender: TObject);
+var
+  OrigenDato:Integer;
+begin
+   { if(RB_BBanca.Checked = True)then
+      begin
+        IdGasto:=Qr_BuscaGastoid_gasto.Value;//Qr_BuscaXBancaid_gasto.AsInteger;
+        OrigenDato:=Qr_BuscaGastoorigen.Value;//Qr_BuscaXBancaorigen.AsInteger;
+      end
+    else
+    if(RB_Comprobante.Checked = True)then
+      begin
+        IdGasto:=Qr_BuscaXCompid_gasto.AsInteger;
+        OrigenDato:=Qr_BuscaXComporigen.AsInteger;
+      end
+    else
+    if(RB_Fecha.Checked = True)then
+      begin
+        IdGasto:=Qr_BuscaXFechaid_gasto.AsInteger;
+        OrigenDato:=Qr_BuscaXFechaorigen.AsInteger;
+      end
+    else
+    if(RB_BancaFecha.Checked = True)then
+      begin
+        IdGasto:=Qr_BuscaXNBFechaid_gasto.AsInteger;
+        OrigenDato:=Qr_BuscaXNBFechaorigen.AsInteger;
+      end;}
+
+    IdGasto:=TableV_GatosIdGasto.Value;//Qr_BuscaGastoid_gasto.Value;
+    OrigenDato:=TableV_GatosOrigen.Value; //Qr_BuscaGastoorigen.Value;
+    if(OrigenDato = 1)then
+      begin
+        BBT_GuardarG.Tag:=1;
+        _FGastos.Caption:='Gastos(Editar)';
+        if(IdGasto > 0)then
+          begin
+            LlenarCampos(TableV_GatosIdGasto.Value);//Qr_BuscaXCompid_gasto.AsInteger);
+            BBT_GuardarG.Tag:=1;
+          end;
+      end
+    else
+      begin
+        LimpiarCampos;
+        MessageDlg('Imposible modificar el gasto seleccionado.'+#13+'El gasto seleccionado fue generado como gasto de banco'+#13+
+        'el cual no puede ser modificado.'+#13+#13+'Solo pueden ser modificados gastos generales o espeficos a bancas.',mtInformation,[mbOK],0);
+      end;
+  {else
+  if(IdGasto = 0)then
+    begin
+      MessageDlg('Seleccione un gasto para editar.',mtInformation, [mbOK],0);
+    end; }
+end;
+
+procedure TFGastos.MM_Eliminar1Click(Sender: TObject);
+var
+ MensajeDLg ,OrigenDato:Integer;
+begin
+   { if(RB_BBanca.Checked = True)then
+      begin
+        IdGasto:=Qr_BuscaXBancaid_gasto.AsInteger;
+        OrigenDato:=Qr_BuscaXBancaorigen.AsInteger;
+      end
+    else
+    if(RB_Comprobante.Checked = True)then
+      begin
+        IdGasto:=Qr_BuscaXCompid_gasto.AsInteger;
+        OrigenDato:=Qr_BuscaXComporigen.AsInteger;
+      end
+    else
+    if(RB_Fecha.Checked = True)then
+      begin
+        IdGasto:=Qr_BuscaXFechaid_gasto.AsInteger;
+        OrigenDato:=Qr_BuscaXFechaorigen.AsInteger;
+      end
+    else
+    if(RB_BancaFecha.Checked = True)then
+      begin
+        IdGasto:=Qr_BuscaXNBFechaid_gasto.AsInteger;
+        OrigenDato:=Qr_BuscaXNBFechaorigen.AsInteger;
+      end;                                 }
+
+      IdGasto:=TableV_GatosIdGasto.Value;//Qr_BuscaGastoid_gasto.Value;
+      OrigenDato:=TableV_GatosOrigen.Value;//Qr_BuscaGastoorigen.Value;
+    if(OrigenDato = 1)then
+      begin
+        MensajeDLg:=MessageDlg('Se propone eliminar el gasto selecionado.'+#13+'Si elimina este gasto no podra revertir esta acción y perderá la información sobre el mismo.'+
+        #13+#13+'Confirme que realmente desea realizar esta acción?',mtConfirmation, [mbYes, mbNo],0);
+        if(MensajeDLg = mrYes)then
+          begin
+            EliminaGasto(IdGasto,1);
+            with Qr_BuscaGasto do
+              begin
+                Close;
+                SQL.Clear;
+                SQL.Add('select (select sum(gx.montoGasto) from gastos as gx, bancas as bx where (gx.id_banca = bx.id_banca)and');
+                SQL.Add('(gx.numerocomprobante like :p1)) as tgasto,g.id_gasto,g.id_banca,g.montoGasto,g.detallesGasto,');
+                SQL.Add('g.debitarA,g.numeroComprobante,g.fechaGasto,g.origen,b.numero_Banca');
+                SQL.Add('from gastos as g,bancas as b where(g.id_banca = b.id_banca)and(numeroComprobante like :p0)');
+                SQL.Add('order by g.fechaGasto;')
+              end;
+            BuscaGasto(0,'',1,DTPE_FInicio.Date,DTPE_FFin.Date);
+          end;
+      end
+    else
+      begin
+        LimpiarCampos;
+        IdGasto:=0;
+        MessageDlg('Imposible eliminar el gasto seleccionado.'+#13+'El gasto seleccionado fue generado como gasto'+#13+
+        'de banca el cual no puede ser eliminado.'+#13+#13+'Solo pueden ser eliminados los gastos generales o espeficos a bancas.',mtInformation,[mbOK],0);
+      end;
+end;
+
+procedure TFGastos.EliminaGasto(IdGasto, SMensaje: Integer);
+var
+  Qr_EliminaGasto:TADOQuery;
+begin
+  try
+    Qr_EliminaGasto:=TADOQuery.Create(Self);
+    with Qr_EliminaGasto do
+      begin
+        Connection:=ControlCuentasBancarias.Coneccion_1;
+        Close;
+        SQL.Clear;
+        SQL.Add('delete from gastos where id_gasto = :p0');
+        Parameters[0].Value:=IdGasto;
+        ExecSQL;
+        Free;
+        if(SMensaje = 1)then
+          MessageDlg('Acción realizada con éxito.',mtInformation,[mbOK],0);
+      end;
+  except
+    MessageDlg('Se produjo un error al intentar eliminar un gasto, cominiquese con el administrador y reporte este error.',mtError,[mbOK],0);
+  end;
+
+end;
+
+procedure TFGastos.CBB_NBancaGastoKeyPress(Sender: TObject; var Key: Char);
+begin
+  if(Key = #13)then
+    begin
+      ECal_1.SetFocus;
+    end;
+end;
+
+procedure TFGastos.ECal_1KeyPress(Sender: TObject; var Key: Char);
+begin
+  if(Key = #13)then
+    begin
+      M_DescripcionG.SetFocus;
+    end;
+end;
+
+procedure TFGastos.EL_NComprobanteKeyPress(Sender: TObject; var Key: Char);
+begin
+  if(Key = #13)then
+    begin
+      CBB_DebitarA.SetFocus;
+    end;
+end;
+
+procedure TFGastos.CBB_DebitarAKeyPress(Sender: TObject; var Key: Char);
+begin
+  if(Key = #13)then
+    begin
+      DTP_FechaG.SetFocus;
+    end;
+end;
+
+procedure TFGastos.DTP_FechaGKeyPress(Sender: TObject; var Key: Char);
+begin
+  if(Key = #13)then
+    begin
+      BBT_GuardarG.SetFocus;
+    end;
+end;
+
+procedure TFGastos.MM_VisualizarImprimirClick(Sender: TObject);
+begin
+  IdGasto:=0;
+  IdGasto:=TableV_GatosIdGasto.Value;
+  _FBuscaReporte:=TFBuscaReportes.Create(Self);
+  with _FBuscaReporte do
+    begin
+      ReporteGasto(IdGasto,-1,'A',Now,Now,0,0);
+    end;
+  _FBuscaReporte.Free;
+end;
+
+procedure TFGastos.SBT_1Click(Sender: TObject);
+begin
+  try
+    _FBuscaReporte:=TFBuscaReportes.Create(Self);
+    _FBuscaReporte.NB_1.PageIndex:=3;
+    _FBuscaReporte.Caption:='Reporte General de Gastos.';
+    _FBuscaReporte.DTP_TodoGastoInicio.DateTime:=Now;
+    _FBuscaReporte.DTP_TodoGastoFin.DateTime:=Now;
+    todoNBanca:=1;
+    _FBuscaReporte.ClientHeight:=238;
+    _FBuscaReporte.ShowModal;
+  finally
+    _FBuscaReporte.Free;
+  end;
+end;
+
+procedure TFGastos.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+    if(Key = VK_ESCAPE)then
+    begin
+      Self.Close;
+    end;
+end;
+
+procedure TFGastos.JvApplicationHotKey1HotKey(Sender: TObject);
+begin
+  Self.Close;
+end;
+
+procedure TFGastos.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if(Key = #27)then
+    Self.Close;
+end;
+
+end.
